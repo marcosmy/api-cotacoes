@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import yfinance as yf
+import datetime
 
 app = FastAPI()
 
@@ -43,14 +44,27 @@ def get_cotacao(ticker: str):
                     "data": data.strftime("%Y-%m-%d"),
                     "valor": round(float(valor), 2)
                 })
-
+        # Valor de 1 ano atrás
+        hoje = datetime.datetime.now()
+        um_ano_atras = hoje - datetime.timedelta(days=365)
+        hist_ano = acao.history(start=um_ano_atras.strftime("%Y-%m-%d"), end=hoje.strftime("%Y-%m-%d"))
+        data_ano = valor_ano = None
+        if not hist_ano.empty:
+            primeira_linha = hist_ano.iloc[0]
+            data_ano = hist_ano.index[0].strftime("%Y-%m-%d")
+            valor_ano = round(primeira_linha["Close"], 2)
+        
         return {
             "ticker": ticker,
             "preco": preco,
             "nome": nome,
             "moeda": moeda,
             "historico": hist_list,
-            "proventos": prov_list
+            "proventos": prov_list,
+            "ano_atras": {
+                "data": data_ano
+                "valor": valor_ano
+            }
         }
 
     except Exception as e:

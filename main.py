@@ -62,8 +62,8 @@ def get_cotacao(ticker: str):
             "historico": hist_list,
             "proventos": prov_list,
             "ano_atras": {
-                "data": data_ano,
-                "valor": valor_ano
+                "data_ano": data_ano,
+                "valor_ano": valor_ano
             }
         }
 

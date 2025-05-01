@@ -53,6 +53,16 @@ def get_cotacao(ticker: str):
             primeira_linha = hist_ano.iloc[0]
             data_ano = hist_ano.index[0].strftime("%Y-%m-%d")
             valor_ano = round(primeira_linha["Close"], 2)
+       
+        # Valor de meio ano atrás
+        #hoje = datetime.datetime.now()
+        meio_ano_atras = hoje - datetime.timedelta(days=183)
+        hist_mano = acao.history(start=meio_ano_atras.strftime("%Y-%m-%d"), end=hoje.strftime("%Y-%m-%d"))
+        data_mano = valor_mano = None
+        if not hist_mano.empty:
+            primeira_linham = hist_mano.iloc[0]
+            data_mano = hist_mano.index[0].strftime("%Y-%m-%d")
+            valor_mano = round(primeira_linham["Close"], 2)
         
         return {
             "ticker": ticker,
@@ -64,6 +74,10 @@ def get_cotacao(ticker: str):
             "ano_atras": {
                 "data_ano": data_ano,
                 "valor_ano": valor_ano
+            }
+            "mano_atras": {
+                "data_mano": data_mano,
+                "valor_mano": valor_mano
             }
         }
 

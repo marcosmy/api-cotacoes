@@ -74,7 +74,7 @@ def get_cotacao(ticker: str):
             "ano_atras": {
                 "data_ano": data_ano,
                 "valor_ano": valor_ano
-            }
+            }, 
             "mano_atras": {
                 "data_mano": data_mano,
                 "valor_mano": valor_mano
